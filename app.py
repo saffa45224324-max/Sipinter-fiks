@@ -1231,7 +1231,7 @@ def tampilkan_detail_transaksi(id_trx):
         html_nota = f"""
         <div class='nota-box'>
             <div class='nota-header'>
-                <h2>SIPERNAS</h2>
+                <h2>SIPINTER</h2>
                 <p>Jl. Pendidikan No. 1, Kota Kampus<br>Telp: (021) 1234567</p>
             </div>
             <table class='nota-table'>
