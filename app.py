@@ -303,31 +303,42 @@ def halaman_dashboard():
     else: sql += " ORDER BY p.nama DESC"
     
     rows = db.q(sql)
-    if not rows: st.info("Tidak ada data."); return
+    if not rows:
+        st.info("Tidak ada data.")
+    else:
+        for t in rows:
+            hari, denda = db.hitung_denda(t)
+            p = {"nama": t["nama_peminjam"], "nim": t["nim"], "jurusan": t["jurusan"], "program_studi": t["program_studi"], "kelas": t["kelas"]}
+            b = {"judul": t["judul"], "kode_buku": t["kode_buku"]}
 
-    for t in rows:
-        hari, denda = db.hitung_denda(t)
-        p = {"nama": t["nama_peminjam"], "nim": t["nim"], "jurusan": t["jurusan"], "program_studi": t["program_studi"], "kelas": t["kelas"]}
-        b = {"judul": t["judul"], "kode_buku": t["kode_buku"]}
-        
-        pesan = wa_terlambat(t, p, b, hari, denda) if t["status"] == "TERLAMBAT" else wa_sukses_pinjam(t, p, b, tgl(t["tanggal_tenggat"]))
-        
-        c1, c2, c3, c4, c5, c6 = st.columns([1.5, 2.5, 2.5, 2.5, 2, 1])
-        if c1.button(t["kode_transaksi"], key=f"d_kode_{t['id']}", icon=":material/visibility:", use_container_width=True):
-            buka_detail_trx(t["id"]); st.rerun()
-        c2.write(t["nama_peminjam"])
-        c3.write(t["kategori"])
-        c4.write(tgl(t["tanggal_tenggat"]))
-        c5.markdown(badge(t["status"]), unsafe_allow_html=True)
-        with c6:
-            url_wa = url_whatsapp(t["no_whatsapp"], pesan)
-            if url_wa:
-                st.link_button(
-                    "Kirim WhatsApp", url_wa, key=f"wa_dash_{t['id']}",
-                    icon=":material/send:", help="Buka WhatsApp dengan pesan siap dikirim",
-                )
-            else:
-                st.warning("Nomor WhatsApp tidak valid.")
+            pesan = wa_terlambat(t, p, b, hari, denda) if t["status"] == "TERLAMBAT" else wa_sukses_pinjam(t, p, b, tgl(t["tanggal_tenggat"]))
+
+            c1, c2, c3, c4, c5, c6 = st.columns([1.5, 2.5, 2.5, 2.5, 2, 1])
+            if c1.button(t["kode_transaksi"], key=f"d_kode_{t['id']}", icon=":material/visibility:", use_container_width=True):
+                buka_detail_trx(t["id"]); st.rerun()
+            c2.write(t["nama_peminjam"])
+            c3.write(t["kategori"])
+            c4.write(tgl(t["tanggal_tenggat"]))
+            c5.markdown(badge(t["status"]), unsafe_allow_html=True)
+            with c6:
+                url_wa = url_whatsapp(t["no_whatsapp"], pesan)
+                if url_wa:
+                    st.link_button(
+                        "Kirim WhatsApp", url_wa, key=f"wa_dash_{t['id']}",
+                        icon=":material/send:", help="Buka WhatsApp dengan pesan siap dikirim",
+                    )
+                else:
+                    st.warning("Nomor WhatsApp tidak valid.")
+
+    st.markdown("---")
+    with st.container(border=True):
+        st.subheader("Kelompok 3")
+        anggota_cols = st.columns(2)
+        anggota_cols[0].write("**Febe Galih A.** — 4.52.24.3.10")
+        anggota_cols[1].write("**Saffa Adeline** — 4.52.24.3.24")
+        anggota_cols[0].write("**Talitha Dafa A.** — 4.52.24.3.27")
+        anggota_cols[1].write("**Windi Aprilia S.** — 4.52.24.3.28")
+        st.caption("Dosen Pengampu: Dwi Budi Santoso, S.Kom., M.Kom.")
 
 # ================= HALAMAN: TRANSAKSI =================
 def halaman_transaksi():
