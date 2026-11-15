@@ -1,4 +1,4 @@
-"""app.py — SIPINTER (Sistem Informasi Peminjaman Interaktif dan Nyaman Terpadu)."""
+"""app.py — SIPINTER (Sistem Informasi Peminjaman Interaktif dan Terpadu)."""
 import base64
 import json
 import logging
@@ -242,7 +242,7 @@ def halaman_dashboard():
                 <div>
                     <h1 style="margin:0;color:#1e3a8a;font-size:32px">SIPINTER</h1>
                     <p style="margin:8px 0 0;color:#475569">
-                        Sistem Informasi Peminjaman Interaktif dan Nyaman Terpadu
+                        Sistem Informasi Peminjaman Interaktif dan Terpadu
                     </p>
                 </div>
             </div>
